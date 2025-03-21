@@ -1,37 +1,44 @@
-import { HttpService } from '@nestjs/axios';
+// At the top
 import { Injectable, Logger } from '@nestjs/common';
-import { firstValueFrom } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+import { IngestionStatus } from './dto/ingestion-status.enum';
 import { TriggerIngestionDto } from './dto/trigger-ingestion.dto';
+import { HttpService } from '@nestjs/axios';
 
 @Injectable()
 export class IngestionService {
   private readonly logger = new Logger(IngestionService.name);
+  private ingestionStore = new Map<string, IngestionStatus>(); // In-memory tracking
 
   constructor(private readonly httpService: HttpService) {}
 
   async triggerIngestion(dto: TriggerIngestionDto) {
-    const ingestionUrl = 'http://localhost:5000/ingest'; // Python service URL
+    const requestId = uuidv4(); // Generate unique ID for tracking
+    this.ingestionStore.set(requestId, IngestionStatus.PROCESSING);
 
-    try {
-      const response = await firstValueFrom(
-        this.httpService.post(ingestionUrl, { documentId: dto.documentId }),
-      );
+    this.logger.log(`Ingestion started for doc ${dto.documentId} → ID: ${requestId}`);
 
-      return {
-        message: 'Ingestion triggered successfully',
-        data: response.data,
-      };
-    } catch (error: any) {
-      this.logger.error('Failed to trigger ingestion', error);
-      return {
-        message: 'Failed to trigger ingestion',
-        error: error?.message,
-      };
-    }
+    // Simulate Python backend with timeout
+    setTimeout(() => {
+      // Randomly complete or fail ingestion
+      const success = Math.random() > 0.2;
+      const newStatus = success ? IngestionStatus.COMPLETED : IngestionStatus.FAILED;
+      this.ingestionStore.set(requestId, newStatus);
+      this.logger.log(`Ingestion ${requestId} completed with status: ${newStatus}`);
+    }, 3000); // Simulate 3s processing delay
+
+    return {
+      requestId,
+      message: 'Ingestion triggered (mocked)',
+      status: IngestionStatus.PROCESSING,
+    };
   }
 
-  getStatus() {
-    // Optional: Could return in-memory status or ping the Python service
-    return { status: 'Ingestion tracking not implemented yet' };
+  async getStatus(id: string) {
+    const status = this.ingestionStore.get(id);
+    if (!status) {
+      return { requestId: id, status: 'not_found' };
+    }
+    return { requestId: id, status };
   }
 }

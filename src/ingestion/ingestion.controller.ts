@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { IngestionService } from './ingestion.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
@@ -24,7 +24,18 @@ export class IngestionController {
   @Get('status')
   @Roles(UserRole.ADMIN, UserRole.EDITOR)
   @ApiOperation({ summary: 'Check ingestion status (optional stub)' })
-  getStatus() {
-    return this.ingestionService.getStatus();
+  getStatus(@Body('id') id: string) {
+    return this.ingestionService.getStatus(id);
   }
+
+  @Get('embedding/:id')
+@Roles(UserRole.ADMIN)
+@ApiOperation({ summary: 'Mock: Get fake embedding for a document' })
+getEmbedding(@Param('id') id: string) {
+  return {
+    docId: id,
+    embedding: Array.from({ length: 10 }, () => Math.random().toFixed(3)),
+  };
+}
+
 }
