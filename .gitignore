@@ -19,3 +19,4 @@ yarn-error.log*
 # Ignore build files
 dist/
 .cache/
+uploads/
