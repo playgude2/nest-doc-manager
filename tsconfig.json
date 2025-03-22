@@ -8,6 +8,7 @@
       "emitDecoratorMetadata": true,
       "esModuleInterop": true,
       "strict": true
-    }
-  }
+    },
+    "include": ["src/**/*"]
+}
   
