@@ -1,264 +1,261 @@
-Here is a **detailed `README.md` file** for your **NestJS project (`nest-doc-manager`)**. This covers **installation, setup, dependencies, usage, environment setup, and troubleshooting** in detail.
+## 📘 `README.md` — Nest Doc Manager
+
+A modular **NestJS backend** for:
+
+- 🔐 User authentication (JWT-based)
+- 📁 Document upload & management
+- 🔄 Ingestion control (mocked Python backend)
+- 🎯 Role-based access: `admin`, `editor`, `viewer`
 
 ---
 
-### 📄 **README.md** (Detailed Documentation)
+## 🚀 Prerequisites
 
-```md
-# 📘 nest-doc-manager
+Before starting:
 
-A **NestJS-based backend service** for **User Management, Document Management, and Ingestion Control** using **TypeORM** and **PostgreSQL**.
-
----
-
-## 🚀 **Prerequisites**
-Before you begin, make sure you have the following installed:
-
-- **Node.js v18.12.1** (or later)
-- **npm v9.x** (comes with Node.js)
-- **PostgreSQL** (for database)
-- **Git** (for version control)
+- ✅ Node.js (v18+)
+- ✅ npm (v9+)
+- ✅ PostgreSQL
+- ✅ Git (optional)
 
 ---
 
-## 🏗️ **Project Setup**
+## ⚙️ Setup Instructions
 
-### 1️⃣ **Clone the Repository**
-```sh
+### 1️⃣ Clone the Repository
+
+```bash
 git clone https://github.com/playgude2/nest-doc-manager.git
-```
-```sh
 cd nest-doc-manager
 ```
 
-### 2️⃣ **Install Dependencies**
-```sh
+### 2️⃣ Install Dependencies
+
+```bash
 npm install
 ```
 
-### 3️⃣ **Create Environment Configuration**
-Create a `.env` file in the root directory:
-```sh
+### 3️⃣ Configure Environment Variables
+
+Create a `.env` file:
+
+```bash
 touch .env
 ```
-Add the following:
-```ini
-# Server Configuration
-PORT=3000
 
-# Database Configuration
+Paste the following:
+
+```env
+PORT=3000
 DB_HOST=localhost
 DB_PORT=5432
 DB_USERNAME=your_postgres_user
 DB_PASSWORD=your_postgres_password
 DB_NAME=nest_doc_manager
-
-# JWT Secret Key
 JWT_SECRET=supersecretkey
 ```
 
-> 🔹 **Make sure PostgreSQL is running and credentials are correct!**
-
 ---
 
-## 📦 **Installed Dependencies**
-### 🛠 **Core NestJS Dependencies**
-| Package  | Description |
-|----------|------------|
-| `@nestjs/common` | Provides core decorators, utilities, and features for NestJS |
-| `@nestjs/core` | Core functionality of the NestJS framework |
-| `@nestjs/platform-express` | Enables Express.js as the underlying HTTP platform |
+## 🧱 Folder Structure
 
-### 🗄 **Database & ORM (TypeORM + PostgreSQL)**
-| Package  | Description |
-|----------|------------|
-| `@nestjs/typeorm` | Integration of TypeORM with NestJS |
-| `typeorm` | ORM for database interactions |
-| `pg` | PostgreSQL driver for Node.js |
-
-### 🔑 **Authentication & Security**
-| Package  | Description |
-|----------|------------|
-| `@nestjs/jwt` | Used for generating and verifying JWT tokens |
-| `@nestjs/passport` | NestJS integration with Passport.js for authentication |
-| `passport` | Core Passport.js authentication library |
-| `passport-jwt` | JWT strategy for Passport authentication |
-| `bcryptjs` | Library for hashing passwords |
-| `@types/bcryptjs` | TypeScript types for `bcryptjs` |
-
-### 🏗 **Validation & Data Transformation**
-| Package  | Description |
-|----------|------------|
-| `class-validator` | Validates request payloads |
-| `class-transformer` | Transforms objects to match DTOs |
-
-### 📜 **Configuration & Environment Variables**
-| Package  | Description |
-|----------|------------|
-| `@nestjs/config` | Handles environment variables & configuration |
-| `dotenv` | Loads environment variables from `.env` file |
-
-### 📘 **Swagger API Documentation**
-| Package  | Description |
-|----------|------------|
-| `@nestjs/swagger` | Generates OpenAPI (Swagger) documentation |
-| `swagger-ui-express` | UI to explore API documentation |
-
-### 🛠 **Development Dependencies**
-| Package  | Description |
-|----------|------------|
-| `typescript` | TypeScript compiler |
-| `ts-node` | Enables running TypeScript files without compilation |
-| `@types/node` | TypeScript types for Node.js |
-
----
-
-## 📂 **Project Structure**
 ```
 nest-doc-manager/
-│── src/
-│   ├── auth/                  # Authentication Module
-│   │   ├── auth.controller.ts  # Handles login & JWT authentication
-│   │   ├── auth.module.ts      # Auth module setup
-│   │   ├── auth.service.ts     # Logic for authentication
-│   │   ├── jwt.strategy.ts     # JWT strategy for authentication
-│   │   ├── guards/             # Authentication guards
-│   ├── user/                  # User Management Module
-│   │   ├── user.controller.ts  # Handles user-related requests
-│   │   ├── user.service.ts     # Business logic for users
-│   │   ├── user.entity.ts      # TypeORM User model
-│   ├── document/               # Document Management Module
-│   ├── ingestion/              # Ingestion API Communication Module
-│   ├── config/                 # Configuration Files
-│   ├── main.ts                 # Application entry point
-│   ├── app.module.ts            # Root module of the app
-│── test/                        # Test cases
-│── .env                         # Environment variables
-│── package.json                 # Project dependencies
-│── tsconfig.json                 # TypeScript configuration
-│── Dockerfile                    # Docker setup for deployment
-│── README.md                     # Documentation
+├── src/
+│   ├── auth/         → Login, Register, JWT, Role guards
+│   ├── users/        → Admin-only user management
+│   ├── documents/    → Upload, update, delete, retrieve
+│   ├── ingestion/    → Ingestion trigger/status with mocked Python backend
+│   ├── database/     → TypeORM setup & data-source
+│   ├── config/       → App-wide configuration
+│   ├── common/       → Guards, decorators, shared utilities
+│   └── main.ts       → App entry point
+├── test/             → Unit tests
+├── .env              → Environment config
+├── jest.config.js    → Test config
+├── Dockerfile        → Docker build (optional)
+└── README.md
 ```
 
 ---
 
-## 🛠 **Database Setup (PostgreSQL)**
-1️⃣ **Start PostgreSQL**
-Ensure PostgreSQL is installed and running.
-```sh
-psql -U your_postgres_user -W
-```
+## 🛠 Database Setup (PostgreSQL)
 
-2️⃣ **Create the Database**
+### 1️⃣ Create the Database
+
 ```sql
 CREATE DATABASE nest_doc_manager;
 ```
 
-3️⃣ **Run TypeORM Migrations**
-```sh
-npm run build
-npx typeorm migration:run
+> 💡 Ensure your PostgreSQL credentials in `.env` match local setup.
+
+---
+
+## 🧪 Running the App
+
+### Start the Dev Server
+
+```bash
+npm run start
+```
+
+or with hot reload:
+
+```bash
+npm run dev
+```
+
+App will be live at:
+
+```
+http://localhost:3000
 ```
 
 ---
 
-## 🚀 **Running the Project**
-### 1️⃣ **Start Development Server**
-```sh
-npm run start
-```
-or with hot reload:
-```sh
-npm run dev
-```
+## 🧬 API Docs with Swagger
 
-### 2️⃣ **Check API**
-```sh
-curl http://localhost:3000
-```
+Visit:
 
-### 3️⃣ **View API Docs (Swagger)**
-After starting the server, open:
 ```
 http://localhost:3000/api
 ```
 
+You'll find:
+
+- 🔐 JWT Bearer Auth
+- ✍️ Schema validation (DTOs)
+- 📘 Role restrictions
+- 🧾 Sample inputs & outputs
+
 ---
 
-## ✅ **Testing**
-Run unit and e2e tests:
-```sh
+## 👤 Authentication
+
+- `POST /auth/register` → Create account (admin, editor, viewer)
+- `POST /auth/login` → Get JWT token
+
+### Example Payload
+
+```json
+{
+  "email": "admin@example.com",
+  "password": "Admin123",
+  "role": "admin"
+}
+```
+
+---
+
+## 👥 User Management
+
+> 🔐 Protected: Admin Only
+
+- `GET /users`
+- `GET /users/:id`
+- `POST /users`
+- `PATCH /users/:id`
+- `DELETE /users/:id`
+
+---
+
+## 📁 Document Management
+
+> 🔐 Roles: Admin, Editor
+
+- `POST /documents` (Upload)
+- `GET /documents`
+- `GET /documents/:id`
+- `PATCH /documents/:id`
+- `DELETE /documents/:id`
+
+Supports multipart file uploads (`file` field) and saves metadata in DB.
+
+---
+
+## 🔄 Ingestion (Mocked)
+
+> ✅ Works without actual Python backend
+
+- `POST /ingestion/trigger` → Simulates ingestion request
+- `GET /ingestion/status?id=<requestId>` → Status tracking
+- `GET /ingestion/embedding/:id` → Mocked embedding array
+
+---
+
+## ✅ Testing
+
+### Unit Tests
+
+```bash
 npm run test
 ```
 
----
+### Watch Mode
 
-## 🐳 **Docker Setup (Optional)**
-1️⃣ **Build the Docker image**
-```sh
-docker build -t nest-doc-manager .
+```bash
+npm run test:watch
 ```
 
-2️⃣ **Run the Docker container**
-```sh
+### Coverage Report
+
+```bash
+npm run test:cov
+```
+
+Opens `/coverage/lcov-report/index.html` with visual breakdown.
+
+---
+
+## 🐳 Docker Support (Optional)
+
+```bash
+docker build -t nest-doc-manager .
 docker run -p 3000:3000 nest-doc-manager
 ```
 
 ---
 
-## 🔄 **Common Errors & Fixes**
-| Error | Solution |
-|-------|---------|
-| `EADDRINUSE: address already in use :::3000` | Run `lsof -i :3000` and `kill -9 <PID>` |
-| `Cannot find module 'dist/main'` | Run `npm run build` before starting the app |
-| `JWT secret key missing` | Ensure `.env` file contains `JWT_SECRET` |
+## 📦 Git Workflow
 
----
-
-## 📜 **Git Workflow**
-### 1️⃣ **Initialize Git**
-```sh
+```bash
 git init
+git remote add origin https://github.com/your-username/nest-doc-manager.git
 git add .
-git commit -m "Initial commit: Setup NestJS project"
-git branch -M main
-git remote add origin https://github.com/playgude2/nest-doc-manager.git
-git push origin main
-```
-
-### 2️⃣ **Push Future Changes**
-```sh
-git add .
-git commit -m "Updated feature"
-git push origin main
+git commit -m "Initial commit"
+git push -u origin main
 ```
 
 ---
 
-## 📜 **Contributing**
-1. **Fork the repository**
-2. **Create a feature branch**:  
-   ```sh
-   git checkout -b feature-branch
-   ```
-3. **Make changes and commit**:  
-   ```sh
-   git commit -m "Added new feature"
-   ```
-4. **Push to GitHub**:
-   ```sh
-   git push origin feature-branch
-   ```
-5. **Create a pull request on GitHub**
+## ❓ Common Errors
+
+| Error | Fix |
+|-------|-----|
+| `EADDRINUSE:3000` | Kill the process using `lsof -i :3000` |
+| `JWT_SECRET missing` | Check your `.env` file |
+| `typeorm entity not recognized` | Ensure it's imported in `AppModule` |
 
 ---
 
-## 📜 **License**
-This project is licensed under the **MIT License**.
+## 🤝 Contributing
+
+1. Fork repo
+2. Create feature branch: `git checkout -b feature/your-feature`
+3. Commit & push
+4. Open pull request 🚀
 
 ---
 
-🚀 **Your NestJS backend is now fully documented!** Let me know if you need modifications. 😊
-```
+## 📄 License
 
-This **README** ensures **any developer** can **install, run, and understand the project** from scratch. 🚀 Let me know if you'd like any more details!
+MIT License © 2024 Pranav Laygude
+
+---
+
+## 🎉 Summary
+
+- 🔐 Secure, modular backend
+- 🧪 Fully testable
+- 📦 Ready for production or integration
+- 🧠 Simulated ingestion microservice
